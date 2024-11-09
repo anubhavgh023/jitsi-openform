@@ -3,11 +3,10 @@ services:
     image: caddy:2-alpine
     container_name: caddy-proxy
     restart: unless-stopped
-    network_mode: "host"
     networks:
       - proxy-network
     extra_hosts:
-      - "host.docker.internal:host-gateway"
+      - "host.docker.internal:host-gateway"  # This allows accessing host machine
     ports:
       - "80:80"
       - "443:443"
