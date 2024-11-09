@@ -1,0 +1,54 @@
+services:
+  opnform-client:
+    image: jhumanj/opnform-client:latest
+    container_name: opnform-client
+    restart: unless-stopped
+    environment:
+      - VITE_API_URL=https://opnform.anubhavsamanta.tech/api
+      - VITE_APP_URL=https://opnform.anubhavsamanta.tech
+    networks:
+      - proxy-network
+    depends_on:
+      - opnform-api
+
+  opnform-api:
+    image: jhumanj/opnform-api:latest
+    container_name: opnform-api
+    restart: unless-stopped
+    environment:
+      - APP_URL=https://opnform.anubhavsamanta.tech
+      - DB_CONNECTION=mysql
+      - DB_HOST=opnform-db
+      - DB_PORT=3306
+      - DB_DATABASE=opnform
+      - DB_USERNAME=opnform
+      - DB_PASSWORD=${DB_PASSWORD}
+    volumes:
+      - opnform-storage:/var/www/html/storage
+    networks:
+      - proxy-network
+    depends_on:
+      - opnform-db
+
+  opnform-db:
+    image: mysql:8.0
+    container_name: opnform-db
+    restart: unless-stopped
+    environment:
+      - MYSQL_DATABASE=opnform
+      - MYSQL_USER=opnform
+      - MYSQL_PASSWORD=${DB_PASSWORD}
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+    volumes:
+      - opnform-db-data:/var/lib/mysql
+    networks:
+      - proxy-network
+
+networks:
+  proxy-network:
+    name: proxy-network
+    external: true
+
+volumes:
+  opnform-storage:
+  opnform-db-data:

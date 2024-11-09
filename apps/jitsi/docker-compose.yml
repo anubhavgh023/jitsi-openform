@@ -1,0 +1,14 @@
+services:
+  jitsi:
+    image: jitsi/web:latest
+    container_name: jitsi-meet
+    restart: unless-stopped
+    environment:
+      - PUBLIC_URL=https://jitsi.anubhavsamanta.tech
+    networks:
+      - proxy-network
+
+networks:
+  proxy-network:
+    name: proxy-network
+    external: true

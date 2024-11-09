@@ -1,0 +1,16 @@
+jitsi.test.com {
+    reverse_proxy jitsi:80
+}
+
+opnform.anubhavsamanta.tech {
+    # Handle API requests
+    handle /api/* {
+        uri strip_prefix /api
+        reverse_proxy opnform-api:80
+    }
+
+    # Handle all other requests (client)
+    handle {
+        reverse_proxy opnform-client:80
+    }
+}
