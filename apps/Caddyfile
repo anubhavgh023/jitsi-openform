@@ -1,5 +1,9 @@
 jitsi.test.com {
-    reverse_proxy jitsi:80
+    reverse_proxy localhost:8443 {
+        transport http {
+            tls_insecure_skip_verify
+        }
+    }
 }
 
 opnform.anubhavsamanta.tech {
